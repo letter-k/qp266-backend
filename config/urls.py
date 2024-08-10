@@ -1,10 +1,11 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from rest_framework.authtoken.views import ObtainAuthToken
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path(r"ht/", include("health_check.urls")),
     path("api/auth/login/", ObtainAuthToken.as_view(), name="login"),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/schema/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger"),

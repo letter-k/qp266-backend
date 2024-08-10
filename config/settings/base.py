@@ -43,6 +43,11 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
+    "health_check",
+    "health_check.db",
+    "health_check.cache",
+    "health_check.storage",
+    "health_check.contrib.migrations",
 ]
 LOCAL_APPS = [
     "apps.users",
@@ -189,3 +194,10 @@ SPECTACULAR_SETTINGS = {
 
 # logging settings
 LOGGING = LOGGING_SETTINGS
+
+# health settings
+HEALTH_CHECK = {
+	"SUBSETS": {
+		"liveness-probe": ["DatabaseBackend", "DefaultFileStorageHealthCheck"],
+	},
+}
