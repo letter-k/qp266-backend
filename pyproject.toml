@@ -16,11 +16,14 @@ psycopg2-binary = "^2.9.9"
 gunicorn = "^22.0.0"
 whitenoise = {extras = ["brotli"], version = "^6.7.0"}
 django-health-check = "^3.18.3"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
 pre-commit = "^3.8.0"
+django-stubs = "^5.0.4"
+mypy-extensions = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -37,3 +40,6 @@ exclude = '''
   )/
 )
 '''
+
+[tool.mypy]
+plugins = "mypy_django_plugin.main"

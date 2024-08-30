@@ -1,13 +1,15 @@
+import os
 from pathlib import Path
 
 import environ
-
-env = environ.Env()
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 LOGS_DIR = ROOT_DIR / "logs"
 DEBUG_LOGS_DIR = LOGS_DIR / "debug"
 ERROR_LOGS_DIR = LOGS_DIR / "errors"
+
+env = environ.Env()
+env.read_env((os.environ.get("path_env"), ROOT_DIR / ".env")[os.environ.get("path_env") is None])
 
 DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", default="DEBUG")
 
@@ -58,10 +60,19 @@ LOGGING_SETTINGS = {
             "class": "logging.StreamHandler",
             "formatter": "simple",
         },
+        "remote": {
+            "level": "INFO",
+            "class": "config.logging.logger_handler.RemoteLoggerHandler",
+            "email": env("LOGGER_EMAIL"),
+            "password": env("LOGGER_PASSWORD"),
+            "login_url": env("LOGGER_LOGIN_URL"),
+            "refresh_url": env("LOGGER_REFRESH_URL"),
+            "log_url": env("LOGGER_LOG_URL"),
+        },
     },
     "loggers": {
         "django": {
-            "handlers": ["debug_to_file", "errors_to_file", "console"],
+            "handlers": ["debug_to_file", "errors_to_file", "console", "remote"],
             "level": DJANGO_LOG_LEVEL,
         },
     },

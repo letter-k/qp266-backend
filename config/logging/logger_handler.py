@@ -1,8 +1,12 @@
+import logging
 import os
 import pathlib
 import re
 import time
+from datetime import datetime, timedelta
 from logging.handlers import TimedRotatingFileHandler
+
+import requests
 
 
 class TimedRotatingFileHandlerWithZip(TimedRotatingFileHandler):
@@ -106,3 +110,62 @@ class TimedRotatingFileHandlerWithZip(TimedRotatingFileHandler):
                     addend = 3600  # DST bows out before next rollover, so we need to add an hour
                 newRolloverAt += addend
         self.rolloverAt = newRolloverAt
+
+
+class RemoteLogger:
+    def __init__(self, email, password, login_url, refresh_url, log_url):
+        self.email = email
+        self.password = password
+        self.login_url = login_url
+        self.refresh_url = refresh_url
+        self.log_url = log_url
+        self.access_token = None
+        self.refresh_token = None
+        self.token_expiry = None
+        self._authenticate()
+
+    def _authenticate(self):
+        response = requests.post(self.login_url, json={"email": self.email, "password": self.password})
+        if response.status_code == 200:
+            data = response.json()
+            self.access_token = data["access_token"]
+            self.refresh_token = data["refresh_token"]
+            self.token_expiry = datetime.now() + timedelta(days=7)
+        else:
+            raise Exception(f"Authentication failed: {response.status_code} {response.text}")
+
+    def _refresh_token(self):
+        response = requests.post(self.refresh_url, json=self.refresh_token)
+        if response.status_code == 200:
+            data = response.json()
+            self.access_token = data["access_token"]
+            self.refresh_token = data["refresh_token"]
+            self.token_expiry = datetime.now() + timedelta(days=7)
+        else:
+            raise Exception(f"Token refresh failed: {response.status_code} {response.text}")
+
+    def _check_token_validity(self):
+        if datetime.now() >= self.token_expiry:
+            self._refresh_token()
+
+    def log(self, log_level, message, extra_info=None):
+        self._check_token_validity()
+        headers = {
+            "Authorization": f"{self.access_token}",
+            "Content-Type": "application/json",
+            "accept": "application/json",
+        }
+        log_data = {"log_level": log_level, "message": message, "extra_info": extra_info or ""}
+        response = requests.post(self.log_url, headers=headers, json=log_data)
+        if response.status_code != 200:
+            raise Exception(f"Log sending failed: {response.status_code} {response.text}")
+
+
+class RemoteLoggerHandler(logging.Handler):
+    def __init__(self, email, password, login_url, refresh_url, log_url):
+        super().__init__()
+        self.remote_logger = RemoteLogger(email, password, login_url, refresh_url, log_url)
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.remote_logger.log(record.levelname, log_entry)
