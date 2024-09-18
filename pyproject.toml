@@ -26,6 +26,11 @@ pre-commit = "^3.8.0"
 django-stubs = "^5.0.4"
 mypy-extensions = "^1.0.0"
 
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.3"
+pytest-django = "^4.9.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

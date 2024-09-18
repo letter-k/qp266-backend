@@ -3,18 +3,13 @@ from pathlib import Path
 
 import environ
 
-from config.logging.logging_settings import LOGGING_SETTINGS
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 # Environ
 env = environ.Env()
 env.read_env(
-    (
-        os.environ.get("path_env"),
-        BASE_DIR / ".env"
-    )[os.environ.get("path_env") is None]
+    (os.environ.get("path_env"), BASE_DIR / ".env")[os.environ.get("path_env") is None]
 )
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +21,11 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[]) + ["127.0.0.1", "localhost", "backend"]
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[]) + [
+    "127.0.0.1",
+    "localhost",
+    "backend",
+]
 
 # Application definition
 
@@ -51,6 +50,7 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     "apps.users",
+    "apps.auths",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -145,13 +145,6 @@ USE_TZ = True
 STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = "/static/"
 
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-    # and renames the files with unique names for each version to support long-term caching
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Media files
 
 MEDIA_ROOT = BASE_DIR / "media"
@@ -167,9 +160,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_RENDERER_CLASSES": (
-        "rest_framework.renderers.JSONRenderer",
-    ),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
@@ -182,7 +173,7 @@ EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = env.int("EMAIL_PORT", default=587)
-EMAIL_USE_TLS =  env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 
 # api docs
 SPECTACULAR_SETTINGS = {
@@ -192,12 +183,9 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
-# logging settings
-LOGGING = LOGGING_SETTINGS
-
 # health settings
 HEALTH_CHECK = {
-	"SUBSETS": {
-		"liveness-probe": ["DatabaseBackend", "DefaultFileStorageHealthCheck"],
-	},
+    "SUBSETS": {
+        "liveness-probe": ["DatabaseBackend", "DefaultFileStorageHealthCheck"],
+    },
 }

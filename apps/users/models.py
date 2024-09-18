@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
 
-from apps.users.validators import email_validator, username_validator
+from apps.users.validators import email_validator
 
 
 class UserManager(BaseUserManager):

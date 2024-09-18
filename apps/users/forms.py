@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import ValidationError
-from django.db.models import Q
 from django.utils.crypto import get_random_string
 
 User = get_user_model()
@@ -119,7 +118,7 @@ class GroupAdminForm(forms.ModelForm):
         return instance
 
 
-class GroupAdminForm(forms.ModelForm):
+class GroupAdminForm(forms.ModelForm):  # noqa: F811
     """Extra field "Users" for groups."""
 
     class Meta:

@@ -31,3 +31,9 @@ repos:
       pass_filenames: false
       entry: poetry export --without-hashes --output requirements/prod.txt
       files: ^(pyproject.toml|poetry.lock)$
+    - id: test-project
+      name: Run all test in project
+      language: system
+      pass_filenames: false
+      entry: poetry run pytest
+      files: ^(pyproject.toml|poetry.lock)$
