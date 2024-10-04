@@ -17,7 +17,7 @@ gunicorn = "^22.0.0"
 whitenoise = {extras = ["brotli"], version = "^6.7.0"}
 django-health-check = "^3.18.3"
 requests = "^2.32.3"
-drf-spectacular = {git = "https://github.com/kotorkovsciy/drf-spectacular.git"}
+graphene-django = "^3.2.2"
 
 
 [tool.poetry.group.dev.dependencies]

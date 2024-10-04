@@ -41,12 +41,12 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
-    "drf_spectacular",
     "health_check",
     "health_check.db",
     "health_check.cache",
     "health_check.storage",
     "health_check.contrib.migrations",
+    "graphene_django",
 ]
 LOCAL_APPS = [
     "apps.users",
@@ -167,13 +167,31 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
 }
 
 # cors settings
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_URLS_REGEX = r"^/api/.*$"
+CORS_URLS_REGEX = r"^/graphql/.*$"
+
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+]
 
 # email settings
 EMAIL_HOST = env("EMAIL_HOST")
@@ -182,17 +200,15 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = env.int("EMAIL_PORT", default=587)
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 
-# api docs
-SPECTACULAR_SETTINGS = {
-    "TITLE": "Quick Point 266 API",
-    "DESCRIPTION": "Quick and user-friendly task board",
-    "VERSION": "1.0.0",
-    "SERVE_INCLUDE_SCHEMA": False,
-}
-
 # health settings
 HEALTH_CHECK = {
     "SUBSETS": {
         "liveness-probe": ["DatabaseBackend", "DefaultFileStorageHealthCheck"],
     },
+}
+
+GRAPHENE = {
+    "MIDDLEWARE": (
+        "config.graphql_tool.GraphqlMiddleware",
+    )
 }
