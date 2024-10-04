@@ -5,7 +5,6 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group, Permission
-from django.core.exceptions import ValidationError
 from django.utils.crypto import get_random_string
 
 User = get_user_model()
@@ -36,12 +35,6 @@ class UserAdminForm(UserChangeForm):
             user.username = user.email
         user.save()
         return user
-
-    def clean(self):
-        groups = self.cleaned_data["groups"]
-        if groups.count() > 1:
-            raise ValidationError("Выбрать можно только одну группу.")
-        return super().clean()
 
 
 class UserAdminCreationForm(UserCreationForm):
