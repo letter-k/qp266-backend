@@ -1,6 +1,7 @@
-from apps.auths.schema import Mutation, Query
+import apps.auths.schema
 from config.graphql_tool import SchemaRegistry
 
 schema = SchemaRegistry()
-schema.register_query(Query)
-schema.register_mutation(Mutation)
+
+schema.register_query(apps.auths.schema.Query)
+schema.register_mutation(apps.auths.schema.Mutation)
