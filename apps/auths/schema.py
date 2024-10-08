@@ -1,11 +1,12 @@
 from graphene import ObjectType, String
 
-from apps.auths.mutations import ObtainAuthToken
+from apps.auths.mutations import ObtainAuthToken, UserRegister
 from config.graphql_tool import login_required
 
 
 class Mutation(ObjectType):
     obtainAuthToken = ObtainAuthToken.Field()
+    userRegister = UserRegister.Field()
 
 
 class Query(ObjectType):

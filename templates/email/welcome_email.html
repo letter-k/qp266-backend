@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Platform</title>
+    <style>
+        body {
+            background-color: #F0F4F8;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .highlight {
+            color: #FF4081;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .button:hover {
+            background-color: #45A049;
+            transform: translateY(-2px);
+        }
+        .social-links a {
+            color: #A0AEC0;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-size: 2rem; font-weight: bold; text-align: center; color: #2D3748;">🎉 Welcome to qp266! 🎉</h1>
+        <p style="margin-top: 1rem; color: #4A5568;">Dear <span class="highlight">{{ username }}</span>,</p>
+        <p style="margin-top: 1rem; color: #4A5568;">
+            We are super excited to have you on board! 🌟 Thank you for registering with us.
+            If you have any questions or need assistance, feel free to reach out anytime! 📩
+        </p>
+        <p style="margin-top: 1rem; color: #4A5568;">
+            Get ready to explore amazing features and stay tuned for exciting updates! 🚀
+        </p>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="https://letter-k.github.io/qp266-frontend/" class="button">
+                Let's Get Started! 🚀
+            </a>
+        </div>
+        <p style="margin-top: 2rem; color: #A0AEC0; text-align: center;">
+            Best regards,<br>
+            The Team of <strong><a href="https://github.com/letter-k" style="color: #4CAF50; text-decoration: none;">letter-k</a></strong> 💖
+        </p>
+    </div>
+</body>
+</html>

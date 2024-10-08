@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Attempt Detected</title>
+    <style>
+        body {
+            background-color: #F0F4F8;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .highlight {
+            color: #FF4081;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-size: 2rem; font-weight: bold; text-align: center; color: #2D3748;">🚨 Registration Attempt Detected 🚨</h1>
+        <p style="margin-top: 1rem; color: #4A5568;">
+            Hello <span class="highlight">{{ username }}</span>,<br>
+            We noticed a registration attempt using your email address: <span class="highlight">{{ email }}</span>.
+        </p>
+        <p style="margin-top: 1rem; color: #4A5568;">
+            If this was not you, please ensure your account security.
+        </p>
+        <p style="margin-top: 2rem; color: #A0AEC0; text-align: center;">
+            Best regards,<br>
+            The Team of <strong><a href="https://github.com/letter-k" style="color: #4CAF50; text-decoration: none;">letter-k</a></strong> 💖
+        </p>
+    </div>
+</body>
+</html>
