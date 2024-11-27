@@ -1,4 +1,4 @@
-from graphene import ObjectType, String
+from graphene import Field, ObjectType, String
 
 from apps.auths.mutations import ObtainAuthToken, UserRegister
 from config.graphql_tool import login_required
@@ -10,7 +10,7 @@ class Mutation(ObjectType):
 
 
 class Query(ObjectType):
-    ping = String()
+    ping = Field(String)
 
     @login_required
     def resolve_ping(self, info):

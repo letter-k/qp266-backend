@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group,
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.models import TokenProxy
 
 from apps.users.validators import email_validator
 
@@ -65,7 +65,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ("email",)
+    REQUIRED_FIELDS = [
+        "email",
+    ]
 
     class Meta:
         verbose_name = "Пользователь"
@@ -92,16 +94,13 @@ class ProxyGroup(Group):
         verbose_name_plural = "Группы"
 
 
-class ProxyToken(Token):
+class ProxyToken(TokenProxy):
     """
     Proxy mapping pk to user pk for use in admin.
     """
 
-    @property
-    def pk(self):
-        return self.user_id
-
     class Meta:
         proxy = True
+        abstract = False
         verbose_name = "Токен"
         verbose_name_plural = "Токены"

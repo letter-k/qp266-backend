@@ -70,13 +70,13 @@ class UserRegister(graphene.Mutation):
         )
 
         email_subject = "Welcome to qp266!"
-        email_body = render_to_string("email/welcome_email.html", {"username": user.username})
+        email_body = render_to_string("email/welcome_email.html", {"username": user.username})  # type: ignore
 
         email = EmailMessage(
             subject=email_subject,
             body=email_body,
             from_email="no-reply@qp266.ru",
-            to=[user.email],
+            to=[user.email],  # type: ignore
         )
         email.content_subtype = "html"
         email.send()
